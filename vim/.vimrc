@@ -89,6 +89,9 @@ Plugin 'scrooloose/nerdtree'
 " Markieren und Eweitertn von Regionen
 Plugin 'gcmt/wildfire.vim'
 
+" Buffer-Management
+Plugin 'jeetsukumaran/vim-buffergator'
+
 
 " all of your plugins must be added before the following line
 call vundle#end()            " required
@@ -110,7 +113,15 @@ filetype plugin indent on    " required
 syntax on
 
 " enable mouse in terminal
-set mouse=a
+" set mouse=a
+
+" Solves the issue that no splitted window resize is possible with the mouse when running inside tmux.
+" See http://superuser.com/questions/549930/cant-resize-vim-splits-inside-tmux
+set mouse+=a
+if &term =~ '^screen'
+  " tmux knows the extended mouse mode
+  set ttymouse=xterm2
+endif
 
 " no backup files
 set nobackup
@@ -317,6 +328,18 @@ nnoremap <silent> <leader>u= yyp<c-v>$r=yykP2j
 " Over- and underline the current line with dashes in normal mode
 nnoremap <silent> <leader>u- yyp<c-v>$r-yykP2j
 
+nnoremap <silent> <leader>g <C-]>
+nnoremap <silent> <leader>r <C-t>
+
+nnoremap <silent> <leader>b :BuffergatorToggle<CR>
+
+
+" Pressing Tab on the command line will show a menu to complete buffer and file names
+set wildchar=<Tab> wildmenu wildmode=full
+" You can also press F10 to open the buffer menu
+set wildcharm=<C-Z>
+nnoremap <F10> :b <C-Z>
+
 
 
 " jump to last cursor
@@ -416,10 +439,33 @@ colorscheme desert
 
 autocmd filetype jproperties set commentstring=#\ %s
 
-" Konfiguration von Select & Search
+" Configuration of Select & Search plugin.
 let g:select_and_search_active = 1
 
-" Cursor for different modes for Konsole
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
+if has("win32unix")
+  " Do something only in Cygwin
+  " On Cygwin I'm using mintty exclusively.
+  " Cursor for different modes for mintty
+  let &t_SI = "\e[5 q"
+  let &t_EI = "\e[2 q"
+endif
+
+if has("unix") && !has("win32unix")
+  " Do something only in Linux, but not in Cygwin
+  " On Linux I'm using Konsole exclusively.
+  " Cursor for different modes for Konsole
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+endif
+
+" Extends keyword characters for Ant, XML and XSLT files
+autocmd FileType {ant,xml,xslt} setlocal iskeyword=@,-,.,\:,48-57,_,128-167,224-235
+
+" Extends keyword characters for Java Properties files
+autocmd FileType {jproperties} setlocal iskeyword+=-,.
+
+" Set vertical Buffer window
+let g:buffergator_viewport_split_policy="T"
+" Suppress automatic key mapping
+let g:buffergator_suppress_keymaps=1
