@@ -92,6 +92,9 @@ Plugin 'gcmt/wildfire.vim'
 " Buffer-Management
 Plugin 'jeetsukumaran/vim-buffergator'
 
+"Multiple Cursors
+Plugin 'terryma/vim-multiple-cursors'
+
 
 " all of your plugins must be added before the following line
 call vundle#end()            " required
