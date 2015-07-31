@@ -469,3 +469,8 @@ autocmd FileType {jproperties} setlocal iskeyword+=-,.
 let g:buffergator_viewport_split_policy="T"
 " Suppress automatic key mapping
 let g:buffergator_suppress_keymaps=1
+
+" Virtual edit in visual block mode
+set virtualedit=block
+
+
