@@ -95,6 +95,8 @@ Plugin 'jeetsukumaran/vim-buffergator'
 "Multiple Cursors
 Plugin 'terryma/vim-multiple-cursors'
 
+" Preserving case during string substitution
+Plugin 'tpope/vim-abolish'
 
 " all of your plugins must be added before the following line
 call vundle#end()            " required
