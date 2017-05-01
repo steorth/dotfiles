@@ -1,6 +1,8 @@
-set nocompatible              " be iMproved, required
+" be iMproved, required
+set nocompatible
 
-filetype off                  " required
+" required
+filetype off
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -11,79 +13,73 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-" Plugin 'user/L9', {'name': 'newL9'}
 
-" Vim Surround zum einfachen Hinzufügen, Ändern und Entfernen von umgebenden
-" Klammern und Tags
+" Vim Surround for easy adding, changing and removing surrounding braces and
+" tags.
 Plugin 'tpope/vim-surround'
 
-" Verschiedene Color-Schemes
+" Some color schemes
 Plugin 'morhetz/gruvbox'
 Plugin 'w0ng/vim-hybrid'
 Plugin 'jnurmine/Zenburn'
 Plugin 'chriskempson/vim-tomorrow-theme'
 Plugin 'altercation/vim-colors-solarized'
+" Plugin 'jonathanfilip/vim-lucius'
+" Plugin 'NLKNguyen/papercolor-theme'
+" Plugin 'queyenth/oxeded.vim'
+" Plugin 'gosukiwi/vim-atom-dark'
+" Plugin 'Railscasts-Theme-GUIand256color'
+" Plugin 'twilight256.vim'
+" Plugin 'wombat256.vim'
+Plugin 'moria'
 
 
-" Dieses Plugin sorgt dafür, dass Colorschemes, die nicht für die Console
-" gedacht sind, trotzdem in der Consoleversion von Vim laufen.
-" Z.B. das standardmäßig verfügbare Colorscheme desert ist so ein Fall.
+
+" This plugin enables color schemes for the console even if they are created
+" only for GUI version.
+" E.g. the standard color scheme desert works with the console with this
+" plugin.
 Plugin 'godlygeek/csapprox'
 
-" Dateiübergreifende Suche mit ack oder ag
+" Search in files with ack or ag
 Plugin 'mileszs/ack.vim'
 
-" Statusline
+" Enhanced statusline
 Plugin 'bling/vim-airline'
 
 Plugin 'tpope/vim-endwise'
 
-" Unterstützt das Editieren von XML
-" Z.B. wird automatisch ein Endtag erzeugt beim Schreiben eines Anfangs-Tags.
+" Enhanced XML editing stuff.
+" E.g. automatic creation of end tags
 Plugin 'sukima/xmledit'
 
 
-" Ermöglicht das Vergrößern und Wiederherstellen von Fenstern mit <C-w> o
+" Zoom current window or replace old windows via <C-w> o.
 Plugin 'ZoomWin'
 
-" Kommentare für XML
+" Special commentary function for XML
 Plugin 'mvolkmann/vim-tag-comment'
 
-" Auskommentieren von Code
+" Code commentary actions (doesn't handle XML very well)
 Plugin 'tpope/vim-commentary'
 
-" Zusätzliche Textobjekte
+" Additional text objects
 Plugin 'wellle/targets.vim'
 
-" Repeat "." für zusätzliche Kombinationen ermöglichen
+" Enables repeat "." for additional combinations
 Plugin 'tpope/vim-repeat'
 
 " Scratch Buffer
 Plugin 'duff/vim-scratch'
 
-" Führt im aktuellen Puffer ctags on the fly aus und zeigt die Struktur in
-" einem separaten Fenster an.
+" File structure of current buffer via invoking ctags on the fly
 Plugin 'majutsushi/tagbar'
 
 
-" Ermöglicht das Selektieren von Text und anschließendem Suchem mit n
+" Select text and search by pressing n
 Plugin 'luochen1990/select-and-search'
 
-" Ein erweiterter Filesystem-Browser
+" An extended file system browser
 Plugin 'scrooloose/nerdtree'
 
 " Markieren und Eweitertn von Regionen
@@ -98,9 +94,16 @@ Plugin 'terryma/vim-multiple-cursors'
 " Preserving case during string substitution
 Plugin 'tpope/vim-abolish'
 
+" Snippet management
+Plugin 'SirVer/ultisnips'
+
+" Snippets are separated from the engine.
+Plugin 'honza/vim-snippets'
+
+
 " all of your plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+call vundle#end()
+filetype plugin indent on
 " to ignore plugin indent changes, instead use:
 "filetype plugin on
 "
@@ -247,7 +250,7 @@ imap jj <Esc>
 
 
 " Ack (uses Ag behind the scenes)
-let g:ackprg = 'ag --nogroup --nocolor --column'
+let g:ackprg = 'ag --nogroup --nocolor --column -i'
 
 " Airline (status line)
 let g:airline_powerline_fonts = 0
@@ -346,6 +349,9 @@ set wildcharm=<C-Z>
 nnoremap <F10> :b <C-Z>
 
 
+" Select the last changed/pasted text
+" See http://vim.wikia.com/wiki/Selecting_your_pasted_text
+nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
 
 " jump to last cursor
 autocmd BufReadPost *
@@ -435,6 +441,19 @@ fun! SetDiffColors()
 endfun
 autocmd FilterWritePre * call SetDiffColors()
 
+" A function do see the diff between the modified buffer and the unmodified
+" file.
+" See http://vim.wikia.com/wiki/Diff_current_buffer_and_the_original_file
+" Usage: :DiffSaved
+" Leave the diff view: :diffoff
+function! s:DiffWithSaved()
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+com! DiffSaved call s:DiffWithSaved()
 
 "set t_co=256
 set background=dark
@@ -479,3 +498,14 @@ let g:buffergator_suppress_keymaps=1
 set virtualedit=block
 
 
+" Configuration of UltiSnip
+
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+
+
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"

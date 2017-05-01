@@ -1,0 +1,121 @@
+snippet trans
+<transform>
+	<xquery>
+		<![CDATA[
+			declare namespace idx = "java:com.id.xmlbulk.util.XmlIndexCollection";
+			$0
+		]]>
+	</xquery>
+</transform>
+endsnippet
+
+snippet trax
+<transform>
+	<xquery>
+		<![CDATA[
+			declare namespace idx = "java:com.id.xmlbulk.util.XmlBulkContext";
+			declare variable $bulk-context external;
+			$0
+		]]>
+	</xquery>
+</transform>
+endsnippet
+
+snippet fr
+<filereader name="${1:name}" splitby="${2:splitby}" />
+$0
+endsnippet
+
+snippet fw
+<filewriter name="$1" roottagname="$2" />
+$0
+endsnippet
+
+snippet xmlformat
+<xmlformat encoding="UTF-8" inFileName="$1" />
+$0
+endsnippet
+
+snippet group
+<xmlsort deletetempfile="true" tempfile="" keyxpath="${1:xpath}" />
+<group by="$1">
+	<![CDATA[
+		declare variable $groupedBy as xs:string external;
+		let $entries := .
+    $0
+	]]>
+</group>
+endsnippet
+
+snippet csvw
+<xmlcsvwriter name="${1:name}" printHeaders="${2:true}">
+	<csvcoldef valueXpath="@name" name="name" />
+	$0
+</xmlcsvwriter>
+endsnippet
+
+snippet csvr
+<xmlcsvreader name="${1:name}" firstLineAsHeaders="${2:false}">
+	<csvcoldef name="colname" />
+	$0
+</xmlcsvreader>
+endsnippet
+
+snippet bulk
+<xmlbulk message="$1" withContext="false">
+	<pipeline>
+		$0
+	</pipeline>
+</xmlbulk>
+endsnippet
+
+snippet idx
+<xmlindex
+	filename="$1"
+	indexfilename="$2"
+	indexname="$3"
+	splitby="$4"
+	keyxpath="$5"
+	indextype="jdbm.btree"
+/>
+$0
+endsnippet
+
+snippet numb
+<xmlnumberator numberattributename="nr" startnr="1" />$0
+endsnippet
+
+snippet prop
+<property name="$1" value="$2" />
+$0
+endsnippet
+
+snippet root
+<xmlroottag id="$1" fileName="$2" />
+$0
+endsnippet
+
+snippet count
+<xmlcounter counterTagName="errors" counterValueAttributeName="count" />$0
+endsnippet
+
+
+snippet assert
+<assert-no-errors
+	check-name="$1"
+	failed-message="$2"
+	summary-file="$3"
+	details-file="$4"
+	error-count-property-name="check.errors(count)"
+/>
+endsnippet
+
+snippet clone
+<clone>
+	<pipeline>
+	  $0
+	</pipeline>
+	<pipeline>
+	</pipeline>
+</clone>
+endsnippet

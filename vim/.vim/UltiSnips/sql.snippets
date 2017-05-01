@@ -1,0 +1,12 @@
+snippet act
+-- Tabelle ${1:IBAN_ARV}, Spalte ${2:HINWEIS}
+ALTER TABLE $1 ADD Z VARCHAR(${3:4000})
+;
+UPDATE $1 SET Z = $2
+;
+ALTER TABLE $1 DROP COLUMN $2
+;
+RENAME COLUMN $1.Z TO $2
+;
+$0
+endsnippet
