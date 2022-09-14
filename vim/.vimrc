@@ -100,6 +100,7 @@ Plugin 'SirVer/ultisnips'
 " Snippets are separated from the engine.
 Plugin 'honza/vim-snippets'
 
+Plugin 'tpope/vim-fireplace'
 
 " all of your plugins must be added before the following line
 call vundle#end()
@@ -250,7 +251,8 @@ imap jj <Esc>
 
 
 " Ack (uses Ag behind the scenes)
-let g:ackprg = 'ag --nogroup --nocolor --column -i'
+"let g:ackprg = 'ag --nogroup --nocolor --column -i'
+let g:ackprg = 'ack --nogroup --nocolor --column -i'
 
 " Airline (status line)
 let g:airline_powerline_fonts = 0
@@ -509,3 +511,5 @@ let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
+set scrolloff=0
